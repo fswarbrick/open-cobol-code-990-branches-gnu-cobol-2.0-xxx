@@ -1,0 +1,1048 @@
+## Copyright (C) 2003-2012, 2016 Free Software Foundation, Inc.
+## Written by Keisuke Nishida, Roger While, Edward Hart, Simon Sobisch
+##
+## This file is part of GnuCOBOL.
+##
+## The GnuCOBOL compiler is free software: you can redistribute it
+## and/or modify it under the terms of the GNU General Public License
+## as published by the Free Software Foundation, either version 3 of the
+## License, or (at your option) any later version.
+##
+## GnuCOBOL is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with GnuCOBOL.  If not, see <http://www.gnu.org/licenses/>.
+
+### GnuCOBOL Test Suite
+
+###
+### Invalid PROGRAM-ID
+###
+
+AT_SETUP([Invalid PROGRAM-ID])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      short.
+       PROCEDURE        DIVISION.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: 3: Error: Invalid PROGRAM-ID 'short' - Name duplicates a 'C' keyword
+])
+
+AT_CLEANUP
+
+AT_SETUP([Invalid PROGRAM-ID type clause (1)])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog IS COMMON.
+       PROCEDURE        DIVISION.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: 3: Error: COMMON may only be used in a contained program
+])
+
+AT_CLEANUP
+
+AT_SETUP([Invalid PROGRAM-ID type clause (2)])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog IS INITIAL RECURSIVE.
+       PROCEDURE        DIVISION.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: 3: Error: syntax error, unexpected RECURSIVE, expecting .
+])
+
+AT_CLEANUP
+
+
+AT_SETUP([INITIAL/RECURSIVE before COMMON])
+AT_KEYWORDS([PROGRAM-ID definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      containing-prog.
+
+       PROCEDURE        DIVISION.
+
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog-1 IS INITIAL COMMON.
+       PROCEDURE        DIVISION.
+           STOP RUN.
+       END PROGRAM      prog-1.
+
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog-2 IS RECURSIVE COMMON.
+       PROCEDURE        DIVISION.
+           STOP RUN.
+       END PROGRAM      prog-2.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [], [])
+
+AT_CLEANUP
+
+###
+### Data name
+###
+
+## Undefined
+
+AT_SETUP([Undefined data name])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       PROCEDURE        DIVISION.
+           DISPLAY X
+           END-DISPLAY.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: 5: Error: 'X' is not defined
+])
+
+AT_CLEANUP
+
+AT_SETUP([Undefined group name])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 X             PIC X.
+       PROCEDURE        DIVISION.
+           DISPLAY X IN G
+           END-DISPLAY.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: 8: Error: 'X' in 'G' is not defined
+])
+
+AT_CLEANUP
+
+AT_SETUP([Undefined data name in group])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 G.
+         02 X           PIC X.
+       01 Y             PIC X.
+       PROCEDURE        DIVISION.
+           DISPLAY Y IN G
+           END-DISPLAY.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: 10: Error: 'Y' in 'G' is not defined
+])
+
+AT_CLEANUP
+
+AT_SETUP([Reference not a group name])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 X             PIC X.
+       PROCEDURE        DIVISION.
+           DISPLAY X IN X
+           END-DISPLAY.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: 8: Error: 'X' in 'X' is not defined
+])
+
+AT_CLEANUP
+
+
+## Incomplete
+
+AT_SETUP([Incomplete 01 definition])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 X.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: 6: Error: PICTURE clause required for 'X'
+])
+
+AT_CLEANUP
+
+
+## Same labels in different sections
+
+AT_SETUP([Same labels in different sections])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       PROCEDURE        DIVISION.
+       S-1 SECTION.
+       L.
+
+       S-2 SECTION.
+       L.
+
+       S-3 SECTION.
+            GO TO L.
+       L.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [], [])
+
+AT_CLEANUP
+
+
+## Redefinition
+
+AT_SETUP([Redefinition of 01 items])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 X             PIC X.
+       01 X             PIC X.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [],
+[prog.cob: 7: Warning: Redefinition of 'X'
+prog.cob: 6: Warning: 'X' previously defined here
+])
+
+AT_CLEANUP
+
+AT_SETUP([Redefinition of 01 and 02 items])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 X.
+         02 X           PIC X.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [],
+[prog.cob: 7: Warning: Redefinition of 'X'
+prog.cob: 6: Warning: 'X' previously defined here
+])
+
+AT_CLEANUP
+
+AT_SETUP([Redefinition of 02 items])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 G.
+         02 X           PIC X.
+         02 X           PIC X.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [],
+[prog.cob: 8: Warning: Redefinition of 'X'
+prog.cob: 7: Warning: 'X' previously defined here
+])
+
+AT_CLEANUP
+
+AT_SETUP([Redefinition of 77 items])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       77 X             PIC X.
+       77 X             PIC X.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [],
+[prog.cob: 7: Warning: Redefinition of 'X'
+prog.cob: 6: Warning: 'X' previously defined here
+])
+
+AT_CLEANUP
+
+AT_SETUP([Redefinition of 01 and 77 items])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 X             PIC X.
+       77 X             PIC X.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [],
+[prog.cob: 7: Warning: Redefinition of 'X'
+prog.cob: 6: Warning: 'X' previously defined here
+])
+
+AT_CLEANUP
+
+AT_SETUP([Redefinition of 88 items])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 X             PIC X.
+         88 A           VALUE "A".
+         88 A           VALUE "B".
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [],
+[prog.cob: 8: Warning: Redefinition of 'A'
+prog.cob: 7: Warning: 'A' previously defined here
+])
+
+AT_CLEANUP
+
+
+AT_SETUP([Redefinition of program-name])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01  PROG         PIC X.
+
+       PROCEDURE        DIVISION.
+           CONTINUE
+           .
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      foo COMMON.
+       END PROGRAM      foo.
+
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      barr.
+       PROCEDURE        DIVISION.
+           CONTINUE
+           .
+       *> This should cause an error.
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      foo.
+       END PROGRAM      foo.
+       END PROGRAM      barr.
+       END PROGRAM      prog.
+
+
+       *> This should cause an error.
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+           
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01  foo          PIC X.
+           
+       PROCEDURE        DIVISION.
+           CONTINUE
+           .
+       *> This should clash with the data definition.
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      foo.
+       END PROGRAM      foo.
+       END PROGRAM      prog.
+])
+
+AT_CHECK([$COMPILE_ONLY --ffold-call=upper prog.cob], [1], [],
+[prog.cob: 7: Warning: Redefinition of 'prog'
+prog.cob: 3: Warning: 'prog' previously defined here
+prog.cob: 23: Error: Redefinition of program name 'foo'
+prog.cob: 31: Error: Redefinition of program name 'prog'
+prog.cob: 42: Error: Redefinition of 'foo'
+prog.cob: 35: Error: 'foo' previously defined here
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
+[prog.cob: 23: Error: Redefinition of program ID 'foo'
+prog.cob: 31: Error: Redefinition of program ID 'prog'
+])
+
+AT_CLEANUP
+
+
+AT_SETUP([Redefinition of function-prototype name])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+
+       ENVIRONMENT      DIVISION.
+       CONFIGURATION    SECTION.
+       REPOSITORY.
+           FUNCTION func
+           .
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01  func         PIC X.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
+[prog.cob: 9: Warning: No definition/prototype seen for function 'func'
+prog.cob: 12: Error: syntax error, unexpected User function name
+])
+AT_CLEANUP
+
+AT_SETUP([Data item with same name as program-name])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION  DIVISION.
+       FUNCTION-ID.    x.
+       DATA            DIVISION.
+       LINKAGE         SECTION.
+       01  ret         PIC 99.
+       PROCEDURE       DIVISION RETURNING ret.
+           CONTINUE
+           .
+       END FUNCTION x.
+
+           
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.           
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01  x            PIC 999 VALUE 134.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [], [])
+AT_CLEANUP
+
+## Ambiguous reference
+
+AT_SETUP([Ambiguous reference to 02 items])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 G1.
+         02 X           PIC X.
+       01 G2.
+         02 X           PIC X.
+       PROCEDURE        DIVISION.
+           DISPLAY X
+           END-DISPLAY.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: 11: Error: 'X' ambiguous; need qualification
+prog.cob: 7: Error: 'X' in 'G1' defined here
+prog.cob: 9: Error: 'X' in 'G2' defined here
+])
+
+AT_CLEANUP
+
+AT_SETUP([Ambiguous reference to 02 and 03 items])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 G.
+         02 X.
+           03 X         PIC X.
+       PROCEDURE        DIVISION.
+           DISPLAY X
+           END-DISPLAY.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: 10: Error: 'X' ambiguous; need qualification
+prog.cob: 7: Error: 'X' in 'G' defined here
+prog.cob: 8: Error: 'X' in 'X' in 'G' defined here
+])
+
+AT_CLEANUP
+
+AT_SETUP([Ambiguous reference with qualification])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 G1.
+         02 X.
+           03 Y         PIC X.
+       01 G2.
+         02 X.
+           03 Y         PIC X.
+       PROCEDURE        DIVISION.
+           DISPLAY Y OF X
+           END-DISPLAY.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: 13: Error: 'Y' in 'X' ambiguous; need qualification
+prog.cob: 8: Error: 'Y' in 'X' in 'G1' defined here
+prog.cob: 11: Error: 'Y' in 'X' in 'G2' defined here
+])
+
+AT_CLEANUP
+
+
+AT_SETUP([Unique reference with ambiguous qualifiers])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 G1.
+         02 X.
+           03 Y         PIC X VALUE "Y".
+       01 G2.
+         02 X.
+           03 Z         PIC X VALUE "Z".
+       PROCEDURE        DIVISION.
+           DISPLAY Z OF X NO ADVANCING
+           END-DISPLAY.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [], [])
+
+AT_CLEANUP
+
+
+###
+### File name
+###
+
+
+###
+### Label name
+###
+
+## Undefined
+
+AT_SETUP([Undefined procedure name])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       PROCEDURE        DIVISION.
+           GO TO END-OF-PROGRAM.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: 5: Error: 'END-OF-PROGRAM' is not defined
+])
+
+AT_CLEANUP
+
+
+## Redefinition
+
+AT_SETUP([Redefinition of section names])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       PROCEDURE        DIVISION.
+       L SECTION.
+       L SECTION.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: In section 'L':
+prog.cob: 6: Error: Redefinition of 'L'
+prog.cob: 5: Error: 'L' previously defined here
+])
+
+AT_CLEANUP
+
+AT_SETUP([Redefinition of section and paragraph names])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       PROCEDURE        DIVISION.
+       L SECTION.
+       L.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: In section 'L':
+prog.cob: 6: Error: Redefinition of 'L'
+prog.cob: 5: Error: 'L' previously defined here
+])
+
+AT_CLEANUP
+
+AT_SETUP([Redefinition of paragraph names])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       PROCEDURE        DIVISION.
+       L.
+       L.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [],
+[])
+
+## Change when we DON'T allow this
+## AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+## [prog.cob: In paragraph 'L':
+## prog.cob: 6: Error: redefinition of 'L'
+## prog.cob: 5: Error: 'L' previously defined here
+## ])
+
+AT_CLEANUP
+
+AT_SETUP([Ambiguous reference to paragraph name])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       PROCEDURE        DIVISION.
+       S-1 SECTION.
+       L.
+       S-2 SECTION.
+       L.
+       S-3 SECTION.
+           GO TO L.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
+[prog.cob: In section 'S-3':
+prog.cob: 10: Error: 'L' ambiguous; need qualification
+prog.cob: 6: Error: 'L' in 'S-1' defined here
+prog.cob: 8: Error: 'L' in 'S-2' defined here
+])
+
+AT_CLEANUP
+
+AT_SETUP([Non-matching level numbers (extension)])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01  A.
+            05 B.
+                10 C PIC X.
+           04 D.
+            05 E PIC X.
+       PROCEDURE        DIVISION.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY -cb_conf=relax-level-hierarchy:yes prog.cob], [0], [],
+[prog.cob: 9: Warning: No previous data item of level 04
+])
+
+AT_CLEANUP
+
+AT_SETUP([CALL BY VALUE alphanumeric item (extension)])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01  X            PIC X(4).
+       PROCEDURE        DIVISION.
+           CALL "PROG2" USING BY VALUE X
+           END-CALL.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [],
+[prog.cob: 8: Warning: BY CONTENT assumed for alphanumeric item
+])
+
+AT_CLEANUP
+
+
+AT_SETUP([Duplicate identification division header])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
+[prog.cob: 3: Error: syntax error, unexpected IDENTIFICATION, expecting FUNCTION-ID or PROGRAM-ID
+])
+AT_CLEANUP
+
+
+AT_SETUP([Invalid environment division order])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog.
+
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SPECIAL-NAMES.
+           CONSOLE IS CRT
+           .
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA
+           .
+       SOURCE-COMPUTER. a-computer.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
+[prog.cob: 10: Error: PROCEDURE DIVISION header missing
+prog.cob: 10: Error: syntax error, unexpected SPECIAL-NAMES
+prog.cob: 11: Error: syntax error, unexpected DECIMAL-POINT
+prog.cob: 13: Error: syntax error, unexpected SOURCE-COMPUTER
+prog.cob: 13: Error: syntax error, unexpected Identifier
+prog.cob: 14: Error: syntax error, unexpected end of file
+])
+AT_CLEANUP
+
+
+AT_SETUP([Function without END FUNCTION])
+AT_KEYWORDS([definition functions])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
+       FUNCTION-ID. func.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
+[prog.cob: 4: Error: syntax error, unexpected end of file, expecting END FUNCTION
+])
+AT_CLEANUP
+
+
+AT_SETUP([Nested programs without END PROGRAM])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog-1.
+       PROCEDURE DIVISION.
+           
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog-2.
+       PROCEDURE DIVISION.
+
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog-3.
+
+       END PROGRAM prog-1.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [], [])
+AT_CLEANUP
+
+
+AT_SETUP([Nested programs not in procedure division])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog-1.
+
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog-2.
+
+       END PROGRAM prog-1.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
+[prog.cob: 6: Error: PROCEDURE DIVISION header missing
+])
+AT_CLEANUP
+
+
+AT_SETUP([Screen section starts with 78-level])
+AT_KEYWORDS([screen definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog.
+
+       DATA DIVISION.
+       SCREEN SECTION.
+       78 const VALUE "x".
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [], [])
+AT_CLEANUP
+
+
+AT_SETUP([Invalid PICTURE strings])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  empty-pic PIC.
+       01  too-long-pic PIC XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      -XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.
+       01  mutiple-symbols.
+           03  PIC 9CRCR.
+           03  PIC 9DBDB.
+           03  PIC SS99S.
+           03  PIC 99..9.
+           03  PIC 99VV9.
+           03  PIC +$99+.
+           03  PIC $+99$-.
+       01  non-symbols.
+           03  PIC 9K.
+           03  PIC 999C.
+           03  PIC 999D.
+       01  too-many-digits PIC 9(50).
+       01  too-long-number-in-parens PIC 9(11111111111111).
+       01  nested-parens PIC 9((100)).
+       01  unbalanced-parens PIC 9(.
+       01  multiple-pairs-of-parens PIC 9(5)(3).
+       01  no-digit-in-parens PIC 9().
+       01  mutually-exclusive-symbols.
+           03  PIC P(3)9.9.
+           03  PIC 9V.9.
+           03  PIC Z*.
+           03  PIC +(5)--.
+           03  PIC $(4)Z(9).
+           03  PIC $$B*(4).
+           03  PIC NX.
+           03  PIC AN.
+           03  PIC AZ(3).
+           03  PIC 99.99XXXXX.
+           03  PIC SA.
+           03  PIC $$$B+++B---.
+           03  PIC +++9+.
+           03  PIC +9(5)CR.
+           03  PIC -9(5)DB.
+       01 non-rightmost-leftmost-symbols.
+           03  PIC BBB+BB99.
+           03  PIC 99-B.
+           03  PIC 9CRB.
+           03  PIC DB9(5).
+           03  PIC 99$$$.
+           03  PIC 99$B.
+           03  PIC 0$99.
+           03  PIC PPPVP9.
+       01  missing-symbols.
+           03  PIC B(5).
+           03  PIC +.
+           03  PIC $.
+       01  valid-pics.
+           03  PIC VP9B.
+           03  PIC B9P(3).
+           03  PIC B$$$.
+           03  PIC 0000+B0+++0B,+.
+           03  PIC +(5)P(3).
+           03  PIC ++.++.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
+[prog.cob: 8: Warning: Continuation of COBOL words used
+prog.cob: 7: Error: Missing PICTURE string
+prog.cob: 8: Error: PICTURE string may not contain more than 63 characters
+prog.cob: 11: Error: CR or DB may only occur once in a PICTURE string
+prog.cob: 12: Error: CR or DB may only occur once in a PICTURE string
+prog.cob: 13: Error: S may only occur once in a PICTURE string
+prog.cob: 13: Error: S must be at start of PICTURE string
+prog.cob: 14: Error: . may only occur once in a PICTURE string
+prog.cob: 15: Error: V may only occur once in a PICTURE string
+prog.cob: 16: Error: a trailing +/- sign cannot follow a leading +/- sign
+prog.cob: 17: Error: a leading +/- sign cannot follow a leading currency symbol
+prog.cob: 17: Error: a trailing currency symbol cannot follow a leading currency symbol
+prog.cob: 17: Error: a trailing +/- sign cannot follow a leading +/- sign
+prog.cob: 19: Error: Invalid PICTURE character 'K'
+prog.cob: 20: Error: C must be followed by R
+prog.cob: 21: Error: D must be followed by B
+prog.cob: 22: Error: Numeric field cannot be larger than 38 digits
+prog.cob: 23: Error: Only up to 9 significant digits in parentheses are permitted
+prog.cob: 24: Error: Non-digits in parentheses not permitted
+prog.cob: 24: Error: Invalid PICTURE character ')'
+prog.cob: 25: Error: Unbalanced parenthesis
+prog.cob: 26: Error: Only one set of parentheses is permitted
+prog.cob: 27: Error: Parentheses must contain a number greater than zero
+prog.cob: 27: Error: PICTURE string must contain 1+ of A, N, X, Z, 1, 9 and *, or 2+ of +, - and the currency symbol
+prog.cob: 29: Error: . cannot follow a P which is after the decimal point
+prog.cob: 30: Error: . cannot follow V
+prog.cob: 31: Error: Cannot have both Z and * in PICTURE string
+prog.cob: 32: Error: a trailing +/- sign cannot follow a floating +/- string which is before the decimal point
+prog.cob: 32: Error: a trailing +/- sign may only occur once in a PICTURE string
+prog.cob: 33: Error: a Z or * which is before the decimal point cannot follow a floating currency symbol string which is before the decimal point                                                                                                                                  
+prog.cob: 34: Error: a Z or * which is before the decimal point cannot follow a floating currency symbol string which is before the decimal point                                                                                                                                  
+prog.cob: 35: Error: A or X cannot follow N
+prog.cob: 36: Error: N cannot follow A or X
+prog.cob: 37: Error: a Z or * which is before the decimal point cannot follow A or X
+prog.cob: 38: Error: A or X cannot follow .
+prog.cob: 39: Error: A or X cannot follow S
+prog.cob: 40: Error: a leading +/- sign cannot follow B, 0 or /
+prog.cob: 40: Error: a leading +/- sign cannot follow a floating currency symbol string which is before the decimal point
+prog.cob: 40: Error: a leading +/- sign may only occur once in a PICTURE string
+prog.cob: 40: Error: a trailing +/- sign cannot follow a leading +/- sign
+prog.cob: 40: Error: a trailing +/- sign may only occur once in a PICTURE string
+prog.cob: 41: Error: a trailing +/- sign cannot follow a floating +/- string which is before the decimal point
+prog.cob: 42: Error: CR or DB cannot follow a leading +/- sign
+prog.cob: 43: Error: CR or DB cannot follow a leading +/- sign
+prog.cob: 45: Error: a leading +/- sign cannot follow B, 0 or /
+prog.cob: 46: Error: a leading +/- sign cannot follow 9
+prog.cob: 47: Error: B, 0 or / cannot follow CR or DB
+prog.cob: 48: Error: 9 cannot follow CR or DB
+prog.cob: 49: Error: a floating currency symbol string which is before the decimal point cannot follow 9
+prog.cob: 50: Error: a leading currency symbol cannot follow 9
+prog.cob: 51: Error: a leading currency symbol cannot follow B, 0 or /
+prog.cob: 52: Error: P must be at start or end of PICTURE string
+prog.cob: 52: Error: V cannot follow a P which is after the decimal point
+prog.cob: 54: Error: PICTURE string must contain 1+ of A, N, X, Z, 1, 9 and *, or 2+ of +, - and the currency symbol
+prog.cob: 55: Error: PICTURE string must contain 1+ of A, N, X, Z, 1, 9 and *, or 2+ of +, - and the currency symbol
+prog.cob: 56: Error: PICTURE string must contain 1+ of A, N, X, Z, 1, 9 and *, or 2+ of +, - and the currency symbol
+])
+AT_CLEANUP
+
+
+AT_SETUP([PICTURE strings invalid with BLANK WHEN ZERO])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  x PIC S9(5) BLANK ZERO.
+       01  y PIC *(5) BLANK ZERO.
+
+       *> Actually valid
+       01  z PIC -9(5) BLANK ZERO.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
+[prog.cob: 7: Error: Cannot have S in PICTURE string and BLANK WHEN ZERO
+prog.cob: 8: Error: Cannot have * in PICTURE string and BLANK WHEN ZERO
+])
+AT_CLEANUP
+
+
+AT_SETUP([Alphabet definition])
+AT_KEYWORDS([definition])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog.
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SOURCE-COMPUTER. GNU-LINUX.
+       OBJECT-COMPUTER. GC-MACHINE,
+                        PROGRAM COLLATING SEQUENCE IS TESTME.
+       SPECIAL-NAMES.
+           ALPHABET TESTME IS
+                    'A' THROUGH 'Z', x'00' thru x'05';
+                    x'41' ALSO x'42', ALSO x'00'.
+           ALPHABET FINE IS
+                    'A' also 'B' also 'C' also 'd' also 'e' ALSO 'f',
+                    'g' also 'G', '1' thru '9'.
+])
+
+AT_DATA([prog2.cob], [
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog2.
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SOURCE-COMPUTER. GNU-LINUX.
+       OBJECT-COMPUTER. GC-MACHINE,
+                        PROGRAM COLLATING SEQUENCE IS TESTNO.
+       SPECIAL-NAMES.
+           ALPHABET FINE IS
+                    'A' also 'B' also 'C' also 'd' also 'e' ALSO 'f',
+                    'g' also 'G', '1' thru '9'.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
+[prog.cob: 10: Error: Duplicate character values in alphabet 'TESTME': x'00', A, B
+])
+AT_CHECK([$COMPILE_ONLY prog2.cob], [1], [],
+[prog2.cob: 8: Error: 'TESTNO' is not defined
+prog2.cob: 8: Error: 'TESTNO' is not an alphabet name
+])
+AT_CLEANUP

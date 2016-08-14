@@ -1,0 +1,1103 @@
+/* A Bison parser, made by GNU Bison 2.3.  */
+
+/* Skeleton interface for Bison's Yacc-like parsers in C
+
+   Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
+   Free Software Foundation, Inc.
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor,
+   Boston, MA 02110-1301, USA.  */
+
+/* As a special exception, you may create a larger work that contains
+   part or all of the Bison parser skeleton and distribute that work
+   under terms of your choice, so long as that work isn't itself a
+   parser generator using the skeleton or a modified version thereof
+   as a parser skeleton.  Alternatively, if you modify or redistribute
+   the parser skeleton itself, you may (at your option) remove this
+   special exception, which will cause the skeleton and the resulting
+   Bison output files to be licensed under the GNU General Public
+   License without this special exception.
+
+   This special exception was added by the Free Software Foundation in
+   version 2.2 of Bison.  */
+
+/* Tokens.  */
+#ifndef YYTOKENTYPE
+# define YYTOKENTYPE
+   /* Put the tokens into the symbol table, so that GDB and other debuggers
+      know about them.  */
+   enum yytokentype {
+     TOKEN_EOF = 0,
+     ACCEPT = 258,
+     ACCESS = 259,
+     ADD = 260,
+     ADDRESS = 261,
+     ADVANCING = 262,
+     AFTER = 263,
+     ALL = 264,
+     ALLOCATE = 265,
+     ALPHABET = 266,
+     ALPHABETIC = 267,
+     ALPHABETIC_LOWER = 268,
+     ALPHABETIC_UPPER = 269,
+     ALPHANUMERIC = 270,
+     ALPHANUMERIC_EDITED = 271,
+     ALSO = 272,
+     ALTER = 273,
+     ALTERNATE = 274,
+     AND = 275,
+     ANY = 276,
+     ARE = 277,
+     AREA = 278,
+     ARGUMENT_NUMBER = 279,
+     ARGUMENT_VALUE = 280,
+     AS = 281,
+     ASCENDING = 282,
+     ASCII = 283,
+     ASSIGN = 284,
+     AT = 285,
+     ATTRIBUTE = 286,
+     AUTO = 287,
+     AUTOMATIC = 288,
+     AWAY_FROM_ZERO = 289,
+     BACKGROUND_COLOR = 290,
+     BASED = 291,
+     BEFORE = 292,
+     BELL = 293,
+     BINARY = 294,
+     BINARY_C_LONG = 295,
+     BINARY_CHAR = 296,
+     BINARY_DOUBLE = 297,
+     BINARY_LONG = 298,
+     BINARY_SHORT = 299,
+     BLANK = 300,
+     BLINK = 301,
+     BLOCK = 302,
+     BOTTOM = 303,
+     BY = 304,
+     BYTE_LENGTH = 305,
+     CALL = 306,
+     CANCEL = 307,
+     CAPACITY = 308,
+     CF = 309,
+     CH = 310,
+     CHAINING = 311,
+     CHARACTER = 312,
+     CHARACTERS = 313,
+     CLASS = 314,
+     CLASSIFICATION = 315,
+     CLOSE = 316,
+     CODE = 317,
+     CODE_SET = 318,
+     COLLATING = 319,
+     COL = 320,
+     COLS = 321,
+     COLUMN = 322,
+     COLUMNS = 323,
+     COMMA = 324,
+     COMMAND_LINE = 325,
+     COMMA_DELIM = 326,
+     COMMIT = 327,
+     COMMON = 328,
+     COMP = 329,
+     COMPUTE = 330,
+     COMP_1 = 331,
+     COMP_2 = 332,
+     COMP_3 = 333,
+     COMP_4 = 334,
+     COMP_5 = 335,
+     COMP_6 = 336,
+     COMP_X = 337,
+     CONCATENATE_FUNC = 338,
+     CONDITION = 339,
+     CONFIGURATION = 340,
+     CONSTANT = 341,
+     CONTAINS = 342,
+     CONTENT = 343,
+     CONTINUE = 344,
+     CONTROL = 345,
+     CONTROLS = 346,
+     CONVERSION = 347,
+     CONVERTING = 348,
+     COPY = 349,
+     CORRESPONDING = 350,
+     COUNT = 351,
+     CRT = 352,
+     CRT_UNDER = 353,
+     CURRENCY = 354,
+     CURRENT_DATE_FUNC = 355,
+     CURSOR = 356,
+     CYCLE = 357,
+     DATA = 358,
+     DATE = 359,
+     DAY = 360,
+     DAY_OF_WEEK = 361,
+     DE = 362,
+     DEBUGGING = 363,
+     DECIMAL_POINT = 364,
+     DECLARATIVES = 365,
+     DEFAULT = 366,
+     DELETE = 367,
+     DELIMITED = 368,
+     DELIMITER = 369,
+     DEPENDING = 370,
+     DESCENDING = 371,
+     DETAIL = 372,
+     DISC = 373,
+     DISK = 374,
+     DISPLAY = 375,
+     DISPLAY_OF_FUNC = 376,
+     DIVIDE = 377,
+     DIVISION = 378,
+     DOWN = 379,
+     DUPLICATES = 380,
+     DYNAMIC = 381,
+     EBCDIC = 382,
+     EC = 383,
+     ELSE = 384,
+     END = 385,
+     END_ACCEPT = 386,
+     END_ADD = 387,
+     END_CALL = 388,
+     END_COMPUTE = 389,
+     END_DELETE = 390,
+     END_DISPLAY = 391,
+     END_DIVIDE = 392,
+     END_EVALUATE = 393,
+     END_FUNCTION = 394,
+     END_IF = 395,
+     END_MULTIPLY = 396,
+     END_PERFORM = 397,
+     END_PROGRAM = 398,
+     END_READ = 399,
+     END_RETURN = 400,
+     END_REWRITE = 401,
+     END_SEARCH = 402,
+     END_START = 403,
+     END_STRING = 404,
+     END_SUBTRACT = 405,
+     END_UNSTRING = 406,
+     END_WRITE = 407,
+     ENTRY = 408,
+     ENVIRONMENT = 409,
+     ENVIRONMENT_NAME = 410,
+     ENVIRONMENT_VALUE = 411,
+     EOL = 412,
+     EOP = 413,
+     EOS = 414,
+     EQUAL = 415,
+     ERASE = 416,
+     ERROR = 417,
+     ESCAPE = 418,
+     EVALUATE = 419,
+     EVENT_STATUS = 420,
+     EXCEPTION = 421,
+     EXCEPTION_CONDITION = 422,
+     EXCLUSIVE = 423,
+     EXIT = 424,
+     EXPONENTIATION = 425,
+     EXTEND = 426,
+     EXTERNAL = 427,
+     F = 428,
+     FD = 429,
+     FILE_CONTROL = 430,
+     FILE_ID = 431,
+     FILLER = 432,
+     FINAL = 433,
+     FIRST = 434,
+     FIXED = 435,
+     FLOAT_BINARY_128 = 436,
+     FLOAT_BINARY_32 = 437,
+     FLOAT_BINARY_64 = 438,
+     FLOAT_DECIMAL_16 = 439,
+     FLOAT_DECIMAL_34 = 440,
+     FLOAT_DECIMAL_7 = 441,
+     FLOAT_EXTENDED = 442,
+     FLOAT_LONG = 443,
+     FLOAT_SHORT = 444,
+     FOOTING = 445,
+     FOR = 446,
+     FOREGROUND_COLOR = 447,
+     FOREVER = 448,
+     FORMATTED_DATE_FUNC = 449,
+     FORMATTED_DATETIME_FUNC = 450,
+     FORMATTED_TIME_FUNC = 451,
+     FREE = 452,
+     FROM = 453,
+     FROM_CRT = 454,
+     FULL = 455,
+     FUNCTION = 456,
+     FUNCTION_ID = 457,
+     FUNCTION_NAME = 458,
+     GENERATE = 459,
+     GIVING = 460,
+     GLOBAL = 461,
+     GO = 462,
+     GOBACK = 463,
+     GREATER = 464,
+     GREATER_OR_EQUAL = 465,
+     GRID = 466,
+     GROUP = 467,
+     HEADING = 468,
+     HIGHLIGHT = 469,
+     HIGH_VALUE = 470,
+     ID = 471,
+     IDENTIFICATION = 472,
+     IF = 473,
+     IGNORE = 474,
+     IGNORING = 475,
+     IN = 476,
+     INDEX = 477,
+     INDEXED = 478,
+     INDICATE = 479,
+     INITIALIZE = 480,
+     INITIALIZED = 481,
+     INITIATE = 482,
+     INPUT = 483,
+     INPUT_OUTPUT = 484,
+     INSPECT = 485,
+     INTO = 486,
+     INTRINSIC = 487,
+     INVALID = 488,
+     INVALID_KEY = 489,
+     IS = 490,
+     I_O = 491,
+     I_O_CONTROL = 492,
+     JUSTIFIED = 493,
+     KEPT = 494,
+     KEY = 495,
+     KEYBOARD = 496,
+     LABEL = 497,
+     LAST = 498,
+     LEADING = 499,
+     LEFT = 500,
+     LEFTLINE = 501,
+     LENGTH = 502,
+     LENGTH_OF = 503,
+     LESS = 504,
+     LESS_OR_EQUAL = 505,
+     LIMIT = 506,
+     LIMITS = 507,
+     LINAGE = 508,
+     LINAGE_COUNTER = 509,
+     LINE = 510,
+     LINE_COUNTER = 511,
+     LINES = 512,
+     LINKAGE = 513,
+     LITERAL = 514,
+     LOCALE = 515,
+     LOCALE_DATE_FUNC = 516,
+     LOCALE_TIME_FUNC = 517,
+     LOCALE_TIME_FROM_FUNC = 518,
+     LOCAL_STORAGE = 519,
+     LOCK = 520,
+     LOWER = 521,
+     LOWER_CASE_FUNC = 522,
+     LOWLIGHT = 523,
+     LOW_VALUE = 524,
+     MANUAL = 525,
+     MEMORY = 526,
+     MERGE = 527,
+     MINUS = 528,
+     MNEMONIC_NAME = 529,
+     MODE = 530,
+     MOVE = 531,
+     MULTIPLE = 532,
+     MULTIPLY = 533,
+     NAME = 534,
+     NATIONAL = 535,
+     NATIONAL_EDITED = 536,
+     NATIONAL_OF_FUNC = 537,
+     NATIVE = 538,
+     NEAREST_AWAY_FROM_ZERO = 539,
+     NEAREST_EVEN = 540,
+     NEAREST_TOWARD_ZERO = 541,
+     NEGATIVE = 542,
+     NEXT = 543,
+     NEXT_PAGE = 544,
+     NO = 545,
+     NO_ECHO = 546,
+     NORMAL = 547,
+     NOT = 548,
+     NOTHING = 549,
+     NOT_END = 550,
+     NOT_EOP = 551,
+     NOT_ESCAPE = 552,
+     NOT_EQUAL = 553,
+     NOT_EXCEPTION = 554,
+     NOT_INVALID_KEY = 555,
+     NOT_OVERFLOW = 556,
+     NOT_SIZE_ERROR = 557,
+     NO_ADVANCING = 558,
+     NUMBER = 559,
+     NUMBERS = 560,
+     NUMERIC = 561,
+     NUMERIC_EDITED = 562,
+     NUMVALC_FUNC = 563,
+     OBJECT_COMPUTER = 564,
+     OCCURS = 565,
+     OF = 566,
+     OFF = 567,
+     OMITTED = 568,
+     ON = 569,
+     ONLY = 570,
+     OPEN = 571,
+     OPTIONAL = 572,
+     OR = 573,
+     ORDER = 574,
+     ORGANIZATION = 575,
+     OTHER = 576,
+     OUTPUT = 577,
+     OVERLINE = 578,
+     PACKED_DECIMAL = 579,
+     PADDING = 580,
+     PAGE = 581,
+     PAGE_COUNTER = 582,
+     PARAGRAPH = 583,
+     PERFORM = 584,
+     PH = 585,
+     PF = 586,
+     PICTURE = 587,
+     PICTURE_SYMBOL = 588,
+     PLUS = 589,
+     POINTER = 590,
+     POSITION = 591,
+     POSITIVE = 592,
+     PRESENT = 593,
+     PREVIOUS = 594,
+     PRINT = 595,
+     PRINTER = 596,
+     PRINTER_1 = 597,
+     PRINTING = 598,
+     PROCEDURE = 599,
+     PROCEDURES = 600,
+     PROCEED = 601,
+     PROGRAM = 602,
+     PROGRAM_ID = 603,
+     PROGRAM_NAME = 604,
+     PROGRAM_POINTER = 605,
+     PROHIBITED = 606,
+     PROMPT = 607,
+     PROTECTED = 608,
+     QUOTE = 609,
+     RANDOM = 610,
+     RD = 611,
+     READ = 612,
+     READY_TRACE = 613,
+     RECORD = 614,
+     RECORDING = 615,
+     RECORDS = 616,
+     RECURSIVE = 617,
+     REDEFINES = 618,
+     REEL = 619,
+     REFERENCE = 620,
+     REFERENCES = 621,
+     RELATIVE = 622,
+     RELEASE = 623,
+     REMAINDER = 624,
+     REMOVAL = 625,
+     RENAMES = 626,
+     REPLACE = 627,
+     REPLACING = 628,
+     REPORT = 629,
+     REPORTING = 630,
+     REPORTS = 631,
+     REPOSITORY = 632,
+     REQUIRED = 633,
+     RESERVE = 634,
+     RESET = 635,
+     RESET_TRACE = 636,
+     RETURN = 637,
+     RETURNING = 638,
+     REVERSE_FUNC = 639,
+     REVERSE_VIDEO = 640,
+     REVERSED = 641,
+     REWIND = 642,
+     REWRITE = 643,
+     RF = 644,
+     RH = 645,
+     RIGHT = 646,
+     ROLLBACK = 647,
+     ROUNDED = 648,
+     RUN = 649,
+     S = 650,
+     SAME = 651,
+     SCREEN = 652,
+     SCREEN_CONTROL = 653,
+     SCROLL = 654,
+     SD = 655,
+     SEARCH = 656,
+     SECTION = 657,
+     SECURE = 658,
+     SEGMENT_LIMIT = 659,
+     SELECT = 660,
+     SEMI_COLON = 661,
+     SENTENCE = 662,
+     SEPARATE = 663,
+     SEQUENCE = 664,
+     SEQUENTIAL = 665,
+     SET = 666,
+     SHARING = 667,
+     SIGN = 668,
+     SIGNED = 669,
+     SIGNED_INT = 670,
+     SIGNED_LONG = 671,
+     SIGNED_SHORT = 672,
+     SIZE = 673,
+     SIZE_ERROR = 674,
+     SORT = 675,
+     SORT_MERGE = 676,
+     SOURCE = 677,
+     SOURCE_COMPUTER = 678,
+     SPACE = 679,
+     SPECIAL_NAMES = 680,
+     STANDARD = 681,
+     STANDARD_1 = 682,
+     STANDARD_2 = 683,
+     START = 684,
+     STATIC = 685,
+     STATUS = 686,
+     STDCALL = 687,
+     STEP = 688,
+     STOP = 689,
+     STRING = 690,
+     SUBSTITUTE_FUNC = 691,
+     SUBSTITUTE_CASE_FUNC = 692,
+     SUBTRACT = 693,
+     SUM = 694,
+     SUPPRESS = 695,
+     SYMBOLIC = 696,
+     SYNCHRONIZED = 697,
+     SYSTEM_DEFAULT = 698,
+     SYSTEM_OFFSET = 699,
+     TAB = 700,
+     TALLYING = 701,
+     TAPE = 702,
+     TERMINATE = 703,
+     TEST = 704,
+     THAN = 705,
+     THEN = 706,
+     THRU = 707,
+     TIME = 708,
+     TIME_OUT = 709,
+     TIMES = 710,
+     TO = 711,
+     TOK_AMPER = 712,
+     TOK_CLOSE_PAREN = 713,
+     TOK_COLON = 714,
+     TOK_DIV = 715,
+     TOK_DOT = 716,
+     TOK_EQUAL = 717,
+     TOK_FALSE = 718,
+     TOK_FILE = 719,
+     TOK_GREATER = 720,
+     TOK_INITIAL = 721,
+     TOK_LESS = 722,
+     TOK_MINUS = 723,
+     TOK_MUL = 724,
+     TOK_NULL = 725,
+     TOK_OVERFLOW = 726,
+     TOK_OPEN_PAREN = 727,
+     TOK_PLUS = 728,
+     TOK_TRUE = 729,
+     TOP = 730,
+     TOWARD_GREATER = 731,
+     TOWARD_LESSER = 732,
+     TRAILING = 733,
+     TRANSFORM = 734,
+     TRIM_FUNC = 735,
+     TRUNCATION = 736,
+     TYPE = 737,
+     U = 738,
+     UNDERLINE = 739,
+     UNIT = 740,
+     UNLOCK = 741,
+     UNSIGNED = 742,
+     UNSIGNED_INT = 743,
+     UNSIGNED_LONG = 744,
+     UNSIGNED_SHORT = 745,
+     UNSTRING = 746,
+     UNTIL = 747,
+     UP = 748,
+     UPDATE = 749,
+     UPON = 750,
+     UPON_ARGUMENT_NUMBER = 751,
+     UPON_COMMAND_LINE = 752,
+     UPON_ENVIRONMENT_NAME = 753,
+     UPON_ENVIRONMENT_VALUE = 754,
+     UPPER = 755,
+     UPPER_CASE_FUNC = 756,
+     USAGE = 757,
+     USE = 758,
+     USER = 759,
+     USER_DEFAULT = 760,
+     USER_FUNCTION_NAME = 761,
+     USING = 762,
+     V = 763,
+     VALUE = 764,
+     VARIABLE = 765,
+     VARYING = 766,
+     WAIT = 767,
+     WHEN = 768,
+     WHEN_COMPILED_FUNC = 769,
+     WITH = 770,
+     WORD = 771,
+     WORDS = 772,
+     WORKING_STORAGE = 773,
+     WRITE = 774,
+     YYYYDDD = 775,
+     YYYYMMDD = 776,
+     ZERO = 777,
+     SHIFT_PREFER = 778,
+     OVERFLOW = 779
+   };
+#endif
+/* Tokens.  */
+#define TOKEN_EOF 0
+#define ACCEPT 258
+#define ACCESS 259
+#define ADD 260
+#define ADDRESS 261
+#define ADVANCING 262
+#define AFTER 263
+#define ALL 264
+#define ALLOCATE 265
+#define ALPHABET 266
+#define ALPHABETIC 267
+#define ALPHABETIC_LOWER 268
+#define ALPHABETIC_UPPER 269
+#define ALPHANUMERIC 270
+#define ALPHANUMERIC_EDITED 271
+#define ALSO 272
+#define ALTER 273
+#define ALTERNATE 274
+#define AND 275
+#define ANY 276
+#define ARE 277
+#define AREA 278
+#define ARGUMENT_NUMBER 279
+#define ARGUMENT_VALUE 280
+#define AS 281
+#define ASCENDING 282
+#define ASCII 283
+#define ASSIGN 284
+#define AT 285
+#define ATTRIBUTE 286
+#define AUTO 287
+#define AUTOMATIC 288
+#define AWAY_FROM_ZERO 289
+#define BACKGROUND_COLOR 290
+#define BASED 291
+#define BEFORE 292
+#define BELL 293
+#define BINARY 294
+#define BINARY_C_LONG 295
+#define BINARY_CHAR 296
+#define BINARY_DOUBLE 297
+#define BINARY_LONG 298
+#define BINARY_SHORT 299
+#define BLANK 300
+#define BLINK 301
+#define BLOCK 302
+#define BOTTOM 303
+#define BY 304
+#define BYTE_LENGTH 305
+#define CALL 306
+#define CANCEL 307
+#define CAPACITY 308
+#define CF 309
+#define CH 310
+#define CHAINING 311
+#define CHARACTER 312
+#define CHARACTERS 313
+#define CLASS 314
+#define CLASSIFICATION 315
+#define CLOSE 316
+#define CODE 317
+#define CODE_SET 318
+#define COLLATING 319
+#define COL 320
+#define COLS 321
+#define COLUMN 322
+#define COLUMNS 323
+#define COMMA 324
+#define COMMAND_LINE 325
+#define COMMA_DELIM 326
+#define COMMIT 327
+#define COMMON 328
+#define COMP 329
+#define COMPUTE 330
+#define COMP_1 331
+#define COMP_2 332
+#define COMP_3 333
+#define COMP_4 334
+#define COMP_5 335
+#define COMP_6 336
+#define COMP_X 337
+#define CONCATENATE_FUNC 338
+#define CONDITION 339
+#define CONFIGURATION 340
+#define CONSTANT 341
+#define CONTAINS 342
+#define CONTENT 343
+#define CONTINUE 344
+#define CONTROL 345
+#define CONTROLS 346
+#define CONVERSION 347
+#define CONVERTING 348
+#define COPY 349
+#define CORRESPONDING 350
+#define COUNT 351
+#define CRT 352
+#define CRT_UNDER 353
+#define CURRENCY 354
+#define CURRENT_DATE_FUNC 355
+#define CURSOR 356
+#define CYCLE 357
+#define DATA 358
+#define DATE 359
+#define DAY 360
+#define DAY_OF_WEEK 361
+#define DE 362
+#define DEBUGGING 363
+#define DECIMAL_POINT 364
+#define DECLARATIVES 365
+#define DEFAULT 366
+#define DELETE 367
+#define DELIMITED 368
+#define DELIMITER 369
+#define DEPENDING 370
+#define DESCENDING 371
+#define DETAIL 372
+#define DISC 373
+#define DISK 374
+#define DISPLAY 375
+#define DISPLAY_OF_FUNC 376
+#define DIVIDE 377
+#define DIVISION 378
+#define DOWN 379
+#define DUPLICATES 380
+#define DYNAMIC 381
+#define EBCDIC 382
+#define EC 383
+#define ELSE 384
+#define END 385
+#define END_ACCEPT 386
+#define END_ADD 387
+#define END_CALL 388
+#define END_COMPUTE 389
+#define END_DELETE 390
+#define END_DISPLAY 391
+#define END_DIVIDE 392
+#define END_EVALUATE 393
+#define END_FUNCTION 394
+#define END_IF 395
+#define END_MULTIPLY 396
+#define END_PERFORM 397
+#define END_PROGRAM 398
+#define END_READ 399
+#define END_RETURN 400
+#define END_REWRITE 401
+#define END_SEARCH 402
+#define END_START 403
+#define END_STRING 404
+#define END_SUBTRACT 405
+#define END_UNSTRING 406
+#define END_WRITE 407
+#define ENTRY 408
+#define ENVIRONMENT 409
+#define ENVIRONMENT_NAME 410
+#define ENVIRONMENT_VALUE 411
+#define EOL 412
+#define EOP 413
+#define EOS 414
+#define EQUAL 415
+#define ERASE 416
+#define ERROR 417
+#define ESCAPE 418
+#define EVALUATE 419
+#define EVENT_STATUS 420
+#define EXCEPTION 421
+#define EXCEPTION_CONDITION 422
+#define EXCLUSIVE 423
+#define EXIT 424
+#define EXPONENTIATION 425
+#define EXTEND 426
+#define EXTERNAL 427
+#define F 428
+#define FD 429
+#define FILE_CONTROL 430
+#define FILE_ID 431
+#define FILLER 432
+#define FINAL 433
+#define FIRST 434
+#define FIXED 435
+#define FLOAT_BINARY_128 436
+#define FLOAT_BINARY_32 437
+#define FLOAT_BINARY_64 438
+#define FLOAT_DECIMAL_16 439
+#define FLOAT_DECIMAL_34 440
+#define FLOAT_DECIMAL_7 441
+#define FLOAT_EXTENDED 442
+#define FLOAT_LONG 443
+#define FLOAT_SHORT 444
+#define FOOTING 445
+#define FOR 446
+#define FOREGROUND_COLOR 447
+#define FOREVER 448
+#define FORMATTED_DATE_FUNC 449
+#define FORMATTED_DATETIME_FUNC 450
+#define FORMATTED_TIME_FUNC 451
+#define FREE 452
+#define FROM 453
+#define FROM_CRT 454
+#define FULL 455
+#define FUNCTION 456
+#define FUNCTION_ID 457
+#define FUNCTION_NAME 458
+#define GENERATE 459
+#define GIVING 460
+#define GLOBAL 461
+#define GO 462
+#define GOBACK 463
+#define GREATER 464
+#define GREATER_OR_EQUAL 465
+#define GRID 466
+#define GROUP 467
+#define HEADING 468
+#define HIGHLIGHT 469
+#define HIGH_VALUE 470
+#define ID 471
+#define IDENTIFICATION 472
+#define IF 473
+#define IGNORE 474
+#define IGNORING 475
+#define IN 476
+#define INDEX 477
+#define INDEXED 478
+#define INDICATE 479
+#define INITIALIZE 480
+#define INITIALIZED 481
+#define INITIATE 482
+#define INPUT 483
+#define INPUT_OUTPUT 484
+#define INSPECT 485
+#define INTO 486
+#define INTRINSIC 487
+#define INVALID 488
+#define INVALID_KEY 489
+#define IS 490
+#define I_O 491
+#define I_O_CONTROL 492
+#define JUSTIFIED 493
+#define KEPT 494
+#define KEY 495
+#define KEYBOARD 496
+#define LABEL 497
+#define LAST 498
+#define LEADING 499
+#define LEFT 500
+#define LEFTLINE 501
+#define LENGTH 502
+#define LENGTH_OF 503
+#define LESS 504
+#define LESS_OR_EQUAL 505
+#define LIMIT 506
+#define LIMITS 507
+#define LINAGE 508
+#define LINAGE_COUNTER 509
+#define LINE 510
+#define LINE_COUNTER 511
+#define LINES 512
+#define LINKAGE 513
+#define LITERAL 514
+#define LOCALE 515
+#define LOCALE_DATE_FUNC 516
+#define LOCALE_TIME_FUNC 517
+#define LOCALE_TIME_FROM_FUNC 518
+#define LOCAL_STORAGE 519
+#define LOCK 520
+#define LOWER 521
+#define LOWER_CASE_FUNC 522
+#define LOWLIGHT 523
+#define LOW_VALUE 524
+#define MANUAL 525
+#define MEMORY 526
+#define MERGE 527
+#define MINUS 528
+#define MNEMONIC_NAME 529
+#define MODE 530
+#define MOVE 531
+#define MULTIPLE 532
+#define MULTIPLY 533
+#define NAME 534
+#define NATIONAL 535
+#define NATIONAL_EDITED 536
+#define NATIONAL_OF_FUNC 537
+#define NATIVE 538
+#define NEAREST_AWAY_FROM_ZERO 539
+#define NEAREST_EVEN 540
+#define NEAREST_TOWARD_ZERO 541
+#define NEGATIVE 542
+#define NEXT 543
+#define NEXT_PAGE 544
+#define NO 545
+#define NO_ECHO 546
+#define NORMAL 547
+#define NOT 548
+#define NOTHING 549
+#define NOT_END 550
+#define NOT_EOP 551
+#define NOT_ESCAPE 552
+#define NOT_EQUAL 553
+#define NOT_EXCEPTION 554
+#define NOT_INVALID_KEY 555
+#define NOT_OVERFLOW 556
+#define NOT_SIZE_ERROR 557
+#define NO_ADVANCING 558
+#define NUMBER 559
+#define NUMBERS 560
+#define NUMERIC 561
+#define NUMERIC_EDITED 562
+#define NUMVALC_FUNC 563
+#define OBJECT_COMPUTER 564
+#define OCCURS 565
+#define OF 566
+#define OFF 567
+#define OMITTED 568
+#define ON 569
+#define ONLY 570
+#define OPEN 571
+#define OPTIONAL 572
+#define OR 573
+#define ORDER 574
+#define ORGANIZATION 575
+#define OTHER 576
+#define OUTPUT 577
+#define OVERLINE 578
+#define PACKED_DECIMAL 579
+#define PADDING 580
+#define PAGE 581
+#define PAGE_COUNTER 582
+#define PARAGRAPH 583
+#define PERFORM 584
+#define PH 585
+#define PF 586
+#define PICTURE 587
+#define PICTURE_SYMBOL 588
+#define PLUS 589
+#define POINTER 590
+#define POSITION 591
+#define POSITIVE 592
+#define PRESENT 593
+#define PREVIOUS 594
+#define PRINT 595
+#define PRINTER 596
+#define PRINTER_1 597
+#define PRINTING 598
+#define PROCEDURE 599
+#define PROCEDURES 600
+#define PROCEED 601
+#define PROGRAM 602
+#define PROGRAM_ID 603
+#define PROGRAM_NAME 604
+#define PROGRAM_POINTER 605
+#define PROHIBITED 606
+#define PROMPT 607
+#define PROTECTED 608
+#define QUOTE 609
+#define RANDOM 610
+#define RD 611
+#define READ 612
+#define READY_TRACE 613
+#define RECORD 614
+#define RECORDING 615
+#define RECORDS 616
+#define RECURSIVE 617
+#define REDEFINES 618
+#define REEL 619
+#define REFERENCE 620
+#define REFERENCES 621
+#define RELATIVE 622
+#define RELEASE 623
+#define REMAINDER 624
+#define REMOVAL 625
+#define RENAMES 626
+#define REPLACE 627
+#define REPLACING 628
+#define REPORT 629
+#define REPORTING 630
+#define REPORTS 631
+#define REPOSITORY 632
+#define REQUIRED 633
+#define RESERVE 634
+#define RESET 635
+#define RESET_TRACE 636
+#define RETURN 637
+#define RETURNING 638
+#define REVERSE_FUNC 639
+#define REVERSE_VIDEO 640
+#define REVERSED 641
+#define REWIND 642
+#define REWRITE 643
+#define RF 644
+#define RH 645
+#define RIGHT 646
+#define ROLLBACK 647
+#define ROUNDED 648
+#define RUN 649
+#define S 650
+#define SAME 651
+#define SCREEN 652
+#define SCREEN_CONTROL 653
+#define SCROLL 654
+#define SD 655
+#define SEARCH 656
+#define SECTION 657
+#define SECURE 658
+#define SEGMENT_LIMIT 659
+#define SELECT 660
+#define SEMI_COLON 661
+#define SENTENCE 662
+#define SEPARATE 663
+#define SEQUENCE 664
+#define SEQUENTIAL 665
+#define SET 666
+#define SHARING 667
+#define SIGN 668
+#define SIGNED 669
+#define SIGNED_INT 670
+#define SIGNED_LONG 671
+#define SIGNED_SHORT 672
+#define SIZE 673
+#define SIZE_ERROR 674
+#define SORT 675
+#define SORT_MERGE 676
+#define SOURCE 677
+#define SOURCE_COMPUTER 678
+#define SPACE 679
+#define SPECIAL_NAMES 680
+#define STANDARD 681
+#define STANDARD_1 682
+#define STANDARD_2 683
+#define START 684
+#define STATIC 685
+#define STATUS 686
+#define STDCALL 687
+#define STEP 688
+#define STOP 689
+#define STRING 690
+#define SUBSTITUTE_FUNC 691
+#define SUBSTITUTE_CASE_FUNC 692
+#define SUBTRACT 693
+#define SUM 694
+#define SUPPRESS 695
+#define SYMBOLIC 696
+#define SYNCHRONIZED 697
+#define SYSTEM_DEFAULT 698
+#define SYSTEM_OFFSET 699
+#define TAB 700
+#define TALLYING 701
+#define TAPE 702
+#define TERMINATE 703
+#define TEST 704
+#define THAN 705
+#define THEN 706
+#define THRU 707
+#define TIME 708
+#define TIME_OUT 709
+#define TIMES 710
+#define TO 711
+#define TOK_AMPER 712
+#define TOK_CLOSE_PAREN 713
+#define TOK_COLON 714
+#define TOK_DIV 715
+#define TOK_DOT 716
+#define TOK_EQUAL 717
+#define TOK_FALSE 718
+#define TOK_FILE 719
+#define TOK_GREATER 720
+#define TOK_INITIAL 721
+#define TOK_LESS 722
+#define TOK_MINUS 723
+#define TOK_MUL 724
+#define TOK_NULL 725
+#define TOK_OVERFLOW 726
+#define TOK_OPEN_PAREN 727
+#define TOK_PLUS 728
+#define TOK_TRUE 729
+#define TOP 730
+#define TOWARD_GREATER 731
+#define TOWARD_LESSER 732
+#define TRAILING 733
+#define TRANSFORM 734
+#define TRIM_FUNC 735
+#define TRUNCATION 736
+#define TYPE 737
+#define U 738
+#define UNDERLINE 739
+#define UNIT 740
+#define UNLOCK 741
+#define UNSIGNED 742
+#define UNSIGNED_INT 743
+#define UNSIGNED_LONG 744
+#define UNSIGNED_SHORT 745
+#define UNSTRING 746
+#define UNTIL 747
+#define UP 748
+#define UPDATE 749
+#define UPON 750
+#define UPON_ARGUMENT_NUMBER 751
+#define UPON_COMMAND_LINE 752
+#define UPON_ENVIRONMENT_NAME 753
+#define UPON_ENVIRONMENT_VALUE 754
+#define UPPER 755
+#define UPPER_CASE_FUNC 756
+#define USAGE 757
+#define USE 758
+#define USER 759
+#define USER_DEFAULT 760
+#define USER_FUNCTION_NAME 761
+#define USING 762
+#define V 763
+#define VALUE 764
+#define VARIABLE 765
+#define VARYING 766
+#define WAIT 767
+#define WHEN 768
+#define WHEN_COMPILED_FUNC 769
+#define WITH 770
+#define WORD 771
+#define WORDS 772
+#define WORKING_STORAGE 773
+#define WRITE 774
+#define YYYYDDD 775
+#define YYYYMMDD 776
+#define ZERO 777
+#define SHIFT_PREFER 778
+#define OVERFLOW 779
+
+
+
+
+#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+typedef int YYSTYPE;
+# define yystype YYSTYPE /* obsolescent; will be withdrawn */
+# define YYSTYPE_IS_DECLARED 1
+# define YYSTYPE_IS_TRIVIAL 1
+#endif
+
+extern YYSTYPE yylval;
+
