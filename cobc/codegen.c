@@ -1155,13 +1155,13 @@ output_local_base_cache (void)
 	local_base_cache = list_cache_sort (local_base_cache, &base_cache_cmp);
 	for (blp = local_base_cache; blp; blp = blp->next) {
 		if (blp->f->special_index > 1) {
-			output_local ("int		%s%d;",
+			output_local ("int\t\t\t%s%d;",
 				      CB_PREFIX_BASE, blp->f->id);
 		} else if (blp->f->special_index) {
-			output_local ("static int	%s%d;",
+			output_local ("static int\t\t%s%d;",
 				      CB_PREFIX_BASE, blp->f->id);
 		} else {
-			output_local ("static cob_u8_t	%s%d[%d]%s;",
+			output_local ("static cob_u8_t\t%s%d[%d]%s;",
 				      CB_PREFIX_BASE, blp->f->id,
 				      blp->f->memory_size, COB_ALIGN);
 		}
@@ -7450,16 +7450,7 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 	}
 
 	if (prog->local_storage) {
-		output_line ("/* Deallocate LOCAL storage */");
-		if (local_mem) {
-			output_line ("if (cob_local_ptr) {");
-			output_line ("\tfree (cob_local_ptr);");
-			output_line ("\tcob_local_ptr = NULL;");
-			if (current_prog->flag_global_use) {
-				output_line ("\tcob_local_save = NULL;");
-			}
-			output_line ("}");
-		}
+		output_line ("/* Deallocate storage for local BASED data */");
 		for (f = prog->local_storage; f; f = f->sister) {
 			if (f->flag_item_based) {
 				output_line ("if (%s%d) {", CB_PREFIX_BASE, f->id);
@@ -7469,6 +7460,16 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 					     CB_PREFIX_BASE, f->id);
 				output_line ("}");
 			}
+		}
+		output_line ("/* Deallocate LOCAL storage */");
+		if (local_mem) {
+			output_line ("if (cob_local_ptr) {");
+			output_line ("\tfree (cob_local_ptr);");
+			output_line ("\tcob_local_ptr = NULL;");
+			if (current_prog->flag_global_use) {
+				output_line ("\tcob_local_save = NULL;");
+			}
+			output_line ("}");
 		}
 		output_newline ();
 	}

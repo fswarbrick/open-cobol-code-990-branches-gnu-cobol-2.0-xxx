@@ -1800,6 +1800,7 @@ error_if_no_advancing_in_screen_display (cb_tree advancing)
 %token TRUNCATION
 %token TYPE
 %token U
+%token UNBOUNDED
 %token UNDERLINE
 %token UNIT
 %token UNLOCK
@@ -4715,7 +4716,7 @@ _occurs_step:
 /* OCCURS clause */
 
 occurs_clause:
-  OCCURS integer _occurs_to_integer _times
+  OCCURS integer _occurs_to _times
   _occurs_depending occurs_keys _occurs_indexed
   {
 	check_repeated ("OCCURS", SYN_CLAUSE_7, &check_pic_duplicate);
@@ -4730,7 +4731,13 @@ occurs_clause:
 	} else if (current_field->flag_external) {
 		cb_error (_("%s and %s are mutually exclusive"), "EXTERNAL", "OCCURS");
 	}
-	if ($3) {
+	if (current_field->flag_unbounded) {
+		if (current_field->parent->flag_item_based || current_field->storage == CB_STORAGE_LINKAGE) {
+//			don't set occurs_min / occurs_max?		
+		} else {
+			cb_error (_("UNBOUNDED table only allowed in BASED group or in LINKAGE SECTION"));
+		}
+	} else if ($3) {
 		current_field->occurs_min = cb_get_int ($2);
 		current_field->occurs_max = cb_get_int ($3);
 		if (current_field->depending &&
@@ -4774,6 +4781,11 @@ occurs_clause:
 	CB_PENDING("OCCURS with DYNAMIC capacity");
 	current_field->flag_occurs = 1;
   }
+;
+
+_occurs_to:
+   _occurs_to_integer 
+ | TO UNBOUNDED 		{ current_field->flag_unbounded = 1; }
 ;
 
 _occurs_to_integer:

@@ -1237,7 +1237,7 @@ static struct cobc_reserved default_reserved_words[] = {
 				0, 0
   },
   { "OCCURS",			0, 0, OCCURS,			/* 2002 */
-				0, 0
+				CB_CS_OCCURS, 0
   },
   { "OF",			0, 0, OF,			/* 2002 */
 				0, 0
@@ -1794,6 +1794,9 @@ static struct cobc_reserved default_reserved_words[] = {
   },
   { "UCS-4",			0, 1, -1,			/* 2002 (C/S) */
 				0, 0
+  },
+  { "UNBOUNDED",		0, 1, UNBOUNDED,			/* IBM V5 */
+				0, CB_CS_OCCURS
   },
   { "UNDERLINE",		0, 0, UNDERLINE,		/* 2002 (C/S) */
 				0, 0
