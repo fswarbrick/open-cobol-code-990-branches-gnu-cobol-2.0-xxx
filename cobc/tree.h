@@ -725,8 +725,8 @@ struct cb_field {
 	unsigned int flag_is_pdiv_parm	: 1;	/* Is PROC DIV USING */
 	unsigned int flag_is_pdiv_opt	: 1;	/* Is PROC DIV USING OPTIONAL */
 	unsigned int flag_local_alloced	: 1;	/* LOCAL storage is allocated */
-	unsigned int flag_no_init	: 1;	/* No initialize unless used */
 
+	unsigned int flag_no_init	: 1;	/* No initialize unless used */
 	unsigned int flag_vsize_done	: 1;	/* Variable size cached */
 	unsigned int flag_vaddr_done	: 1;	/* Variable address cached */
 	unsigned int flag_odo_relative	: 1;	/* complex-odo: item address depends
@@ -735,7 +735,9 @@ struct cb_field {
 	unsigned int flag_all_debug	: 1;	/* DEBUGGING */
 	unsigned int flag_no_field	: 1;	/* SCREEN dummy field */
 	unsigned int flag_any_numeric	: 1;	/* Is ANY NUMERIC */
+
 	unsigned int flag_is_returning	: 1;	/* Is RETURNING item */
+	unsigned int flag_unbounded : 1;	/* OCCURS UNBOUNDED */
 };
 
 #define CB_FIELD(x)		(CB_TREE_CAST (CB_TAG_FIELD, struct cb_field, x))

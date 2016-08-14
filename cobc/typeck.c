@@ -1576,7 +1576,7 @@ cb_build_identifier (cb_tree x, const int subchk)
 				}
 
 				/* Compile-time check for all literals */
-				if (CB_LITERAL_P (sub)) {
+				if (CB_LITERAL_P (sub) && !p->flag_unbounded) {
 					n = cb_get_int (sub);
 					if (n < 1 || n > p->occurs_max) {
 						cb_error_x (x, _("Subscript of '%s' out of bounds: %d"),
